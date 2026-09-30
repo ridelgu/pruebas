@@ -63,7 +63,11 @@ window.MathJax = {
   --text:#1d2233;
   --mute:#5d6580;
   --line:#cfd5e6;
-  --acc:#1f2a8a;
+  --acc:#4055b5;
+  --acc-dark:#33479f;
+  --acc-soft:#eef1ff;
+  --acc-soft-2:#dfe5ff;
+  --acc-border:#bbc5ec;
   --accfg:#ffffff;
   --danger:#b42318;
 
@@ -79,7 +83,11 @@ window.MathJax = {
     --text:#e6e9f7;
     --mute:#98a0c4;
     --line:#2e3560;
-    --acc:#a9b6ff;
+    --acc:#7f91ee;
+    --acc-dark:#6f80d8;
+    --acc-soft:#242b50;
+    --acc-soft-2:#303966;
+    --acc-border:#4b5790;
     --accfg:#12152a;
     --danger:#ff9a92;
 
@@ -149,9 +157,12 @@ section{
 
   border:1px solid var(--line);
 
-  border-radius:10px;
+  border-radius:12px;
 
   padding:16px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.03);
 
 }
 
@@ -181,17 +192,25 @@ select{
 
   width:100%;
 
-  padding:8px 10px;
+  padding:9px 10px;
 
-  border:1px solid var(--line);
+  border:1px solid var(--acc-border);
 
-  border-radius:6px;
+  border-radius:7px;
 
-  background:var(--bg);
+  background:var(--acc-soft);
 
   color:var(--text);
 
   font:inherit;
+
+}
+
+
+input[type=text]:hover,
+select:hover{
+
+  border-color:var(--acc);
 
 }
 
@@ -213,7 +232,7 @@ button:focus-visible{
 
   font-size:.875rem;
 
-  margin-top:4px;
+  margin-top:5px;
 
 }
 
@@ -222,13 +241,13 @@ button:focus-visible{
 
   margin-top:10px;
 
-  padding:10px 12px;
+  padding:11px 12px;
 
-  border:1px solid var(--line);
+  border:1px solid var(--acc-border);
 
-  border-radius:6px;
+  border-radius:7px;
 
-  background:var(--bg);
+  background:var(--acc-soft);
 
   color:var(--text);
 
@@ -264,15 +283,17 @@ button:focus-visible{
 
 .cell{
 
-  border:1px solid var(--line);
+  border:1px solid var(--acc-border);
 
-  border-radius:6px;
+  border-radius:8px;
 
   padding:10px;
 
   display:grid;
 
   gap:7px;
+
+  background:var(--acc-soft);
 
 }
 
@@ -312,9 +333,9 @@ button:focus-visible{
 
   padding:5px 8px;
 
-  border:1px solid var(--line);
+  border:1px solid var(--acc-border);
 
-  background:var(--bg);
+  background:var(--card);
 
   color:var(--text);
 
@@ -324,6 +345,74 @@ button:focus-visible{
 
   cursor:pointer;
 
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    transform .05s ease;
+
+}
+
+
+.quick button:hover{
+
+  background:var(--acc-soft-2);
+
+  border-color:var(--acc);
+
+}
+
+
+.quick button:active{
+
+  transform:translateY(1px);
+
+}
+
+
+.sg-input-row{
+
+  display:flex;
+
+  align-items:stretch;
+
+  gap:8px;
+
+}
+
+
+.sg-fixed{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  min-width:62px;
+
+  padding:8px 12px;
+
+  border:1px solid var(--acc-border);
+
+  border-radius:7px;
+
+  background:var(--acc-soft-2);
+
+  color:var(--acc-dark);
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  font-weight:600;
+
+  font-size:1.05rem;
+
+}
+
+
+.sg-input-row input{
+
+  flex:1;
+
 }
 
 
@@ -332,6 +421,8 @@ button:focus-visible{
   overflow-x:auto;
 
   min-height:160px;
+
+  padding:8px 0;
 
 }
 
@@ -357,11 +448,11 @@ textarea{
 
   padding:10px;
 
-  border:1px solid var(--line);
+  border:1px solid var(--acc-border);
 
-  border-radius:6px;
+  border-radius:7px;
 
-  background:var(--bg);
+  background:var(--acc-soft);
 
   color:var(--text);
 
@@ -408,7 +499,7 @@ textarea{
 
   border:0;
 
-  border-radius:6px;
+  border-radius:7px;
 
   background:var(--acc);
 
@@ -419,6 +510,24 @@ textarea{
   font-weight:600;
 
   cursor:pointer;
+
+  transition:
+    background .15s ease,
+    transform .05s ease;
+
+}
+
+
+.btn:hover{
+
+  background:var(--acc-dark);
+
+}
+
+
+.btn:active{
+
+  transform:translateY(1px);
 
 }
 
@@ -465,26 +574,41 @@ textarea{
   <section>
 
     <label for="leftExpr">
-      Expresión que precede a la recta
+      Expresión
     </label>
 
-    <input
-      type="text"
-      id="leftExpr"
-      value="\operatorname{Sg}\,f'"
-      autocomplete="off"
-      spellcheck="false"
-    >
+
+    <div class="sg-input-row">
+
+      <div class="sg-fixed">
+        Sg
+      </div>
+
+
+      <input
+        type="text"
+        id="leftExpr"
+        value="f'"
+        autocomplete="off"
+        spellcheck="false"
+      >
+
+    </div>
+
 
     <div class="hint">
 
-      Escribí directamente en LaTeX, sin usar
+      Escribí solo la expresión en LaTeX, sin usar
       <code>$</code>.
 
+      Se agregará automáticamente
+      <code>\operatorname{Sg}</code>.
+
       Ejemplos:
-      <code>\operatorname{Sg}\,f'</code>,
-      <code>\operatorname{Sg}\,g(x)</code>,
-      <code>\operatorname{Sg}\left(\frac{f}{g}\right)</code>.
+      <code>f'</code>,
+      <code>g(x)</code>,
+      <code>\frac{f}{g}</code>,
+      <code>\sin x</code>.
 
     </div>
 
@@ -578,6 +702,7 @@ textarea{
 
     </div>
 
+
     <div
       class="grid"
       id="intervals"
@@ -588,7 +713,7 @@ textarea{
 
 
   <!-- =====================================================
-       SOBRE LOS PUNTOS 2
+       SOBRE LOS PUNTOS
        ===================================================== -->
 
   <section>
@@ -609,6 +734,7 @@ textarea{
 
     </div>
 
+
     <div
       class="grid"
       id="tops"
@@ -627,6 +753,7 @@ textarea{
     <h2>
       Vista previa
     </h2>
+
 
     <div
       class="prev"
@@ -1496,6 +1623,33 @@ async function mathFragment(
 
 
 /* =========================================================
+   EXPRESIÓN IZQUIERDA COMPLETA
+   ========================================================= */
+
+function fullLeftExpression(){
+
+  const expr =
+    $('leftExpr')
+      .value
+      .trim();
+
+
+  if(
+    expr
+  ){
+
+    return `\\operatorname{Sg}\\,${expr}`;
+
+  }
+
+
+  return '\\operatorname{Sg}';
+
+}
+
+
+
+/* =========================================================
    RENDER PRINCIPAL
    ========================================================= */
 
@@ -1642,6 +1796,7 @@ async function render(){
     >`;
 
 
+
 /* =========================================================
    DEFINICIÓN DE LA FLECHA
    ========================================================= */
@@ -1683,14 +1838,13 @@ async function render(){
   `;
 
 
+
 /* =========================================================
-   EXPRESIÓN IZQUIERDA
+   SG + EXPRESIÓN
    ========================================================= */
 
   const left =
-    $('leftExpr')
-      .value
-      .trim();
+    fullLeftExpression();
 
 
   svg +=
@@ -1709,8 +1863,9 @@ async function render(){
     );
 
 
+
 /* =========================================================
-   RECTA CON FLECHA A LA DERECHA
+   RECTA CON FLECHA
    ========================================================= */
 
   svg += `
@@ -1734,6 +1889,7 @@ async function render(){
     />
 
   `;
+
 
 
 /* =========================================================
@@ -1815,6 +1971,7 @@ async function render(){
     }
 
   }
+
 
 
 /* =========================================================
@@ -2014,9 +2171,7 @@ function generateTikz(){
 
 
   const left =
-    $('leftExpr')
-      .value
-      .trim();
+    fullLeftExpression();
 
 
   if(
@@ -2031,10 +2186,6 @@ function generateTikz(){
 
   }
 
-
-/* =========================================================
-   RECTA TIKZ CON FLECHA
-   ========================================================= */
 
   t.push(
 
@@ -2211,7 +2362,6 @@ async ()=>{
   catch(e){
 
     ta.select();
-
 
     document.execCommand(
       'copy'
