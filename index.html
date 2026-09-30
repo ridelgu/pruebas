@@ -17,12 +17,6 @@
   href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&display=swap"
 >
 
-
-<!-- =========================================================
-     MATHJAX
-     Convierte LaTeX a SVG real.
-     ========================================================= -->
-
 <script>
 window.MathJax = {
 
@@ -62,13 +56,15 @@ window.MathJax = {
   --card:#ffffff;
   --text:#1d2233;
   --mute:#5d6580;
-  --line:#cfd5e6;
-  --acc:#4055b5;
-  --acc-dark:#33479f;
-  --acc-soft:#eef1ff;
-  --acc-soft-2:#dfe5ff;
-  --acc-border:#bbc5ec;
-  --accfg:#ffffff;
+  --line:#d7dbe5;
+
+  --blue:#4055b5;
+  --blue-dark:#33479f;
+
+  --yellow:#fff4b8;
+  --yellow-border:#e2c85c;
+  --yellow-text:#3b3420;
+
   --danger:#b42318;
 
 }
@@ -82,13 +78,15 @@ window.MathJax = {
     --card:#1a1f3a;
     --text:#e6e9f7;
     --mute:#98a0c4;
-    --line:#2e3560;
-    --acc:#7f91ee;
-    --acc-dark:#6f80d8;
-    --acc-soft:#242b50;
-    --acc-soft-2:#303966;
-    --acc-border:#4b5790;
-    --accfg:#12152a;
+    --line:#343b61;
+
+    --blue:#7f91ee;
+    --blue-dark:#687bd8;
+
+    --yellow:#5a4f20;
+    --yellow-border:#9d8841;
+    --yellow-text:#fff5c8;
+
     --danger:#ff9a92;
 
   }
@@ -187,6 +185,10 @@ label{
 }
 
 
+/* =========================================================
+   CAMPOS BLANCOS
+   ========================================================= */
+
 input[type=text],
 select{
 
@@ -194,15 +196,29 @@ select{
 
   padding:9px 10px;
 
-  border:1px solid var(--acc-border);
+  border:1px solid var(--line);
 
   border-radius:7px;
 
-  background:var(--acc-soft);
+  background:#ffffff;
 
-  color:var(--text);
+  color:#1d2233;
 
   font:inherit;
+
+}
+
+
+@media (prefers-color-scheme:dark){
+
+  :root:not([data-theme="light"]) input[type=text],
+  :root:not([data-theme="light"]) select{
+
+    background:#ffffff;
+
+    color:#1d2233;
+
+  }
 
 }
 
@@ -210,7 +226,7 @@ select{
 input[type=text]:hover,
 select:hover{
 
-  border-color:var(--acc);
+  border-color:var(--blue);
 
 }
 
@@ -219,20 +235,35 @@ input:focus-visible,
 select:focus-visible,
 button:focus-visible{
 
-  outline:2px solid var(--acc);
+  outline:2px solid var(--blue);
 
   outline-offset:2px;
 
 }
 
 
-.hint{
+/* =========================================================
+   AYUDAS / INSTRUCCIONES AMARILLAS
+   ========================================================= */
 
-  color:var(--mute);
+.hint-highlight,
+.info{
+
+  margin-top:8px;
+
+  padding:9px 11px;
+
+  border:1px solid var(--yellow-border);
+
+  border-radius:7px;
+
+  background:var(--yellow);
+
+  color:var(--yellow-text);
 
   font-size:.875rem;
 
-  margin-top:5px;
+  line-height:1.55;
 
 }
 
@@ -241,25 +272,11 @@ button:focus-visible{
 
   margin-top:10px;
 
-  padding:11px 12px;
-
-  border:1px solid var(--acc-border);
-
-  border-radius:7px;
-
-  background:var(--acc-soft);
-
-  color:var(--text);
-
-  font-size:.9rem;
-
-  line-height:1.55;
-
 }
 
 
-.info code,
-.hint code{
+.hint-highlight code,
+.info code{
 
   font-family:ui-monospace,Consolas,monospace;
 
@@ -281,9 +298,13 @@ button:focus-visible{
 }
 
 
+/* =========================================================
+   TARJETAS BLANCAS
+   ========================================================= */
+
 .cell{
 
-  border:1px solid var(--acc-border);
+  border:1px solid var(--line);
 
   border-radius:8px;
 
@@ -293,7 +314,9 @@ button:focus-visible{
 
   gap:7px;
 
-  background:var(--acc-soft);
+  background:#ffffff;
+
+  color:#1d2233;
 
 }
 
@@ -316,6 +339,10 @@ button:focus-visible{
 }
 
 
+/* =========================================================
+   BOTONES RÁPIDOS
+   ========================================================= */
+
 .quick{
 
   display:flex;
@@ -333,11 +360,11 @@ button:focus-visible{
 
   padding:5px 8px;
 
-  border:1px solid var(--acc-border);
+  border:1px solid var(--line);
 
-  background:var(--card);
+  background:#ffffff;
 
-  color:var(--text);
+  color:#1d2233;
 
   border-radius:6px;
 
@@ -355,9 +382,9 @@ button:focus-visible{
 
 .quick button:hover{
 
-  background:var(--acc-soft-2);
+  background:#f2f4f8;
 
-  border-color:var(--acc);
+  border-color:var(--blue);
 
 }
 
@@ -368,6 +395,10 @@ button:focus-visible{
 
 }
 
+
+/* =========================================================
+   SG FIJO
+   ========================================================= */
 
 .sg-input-row{
 
@@ -392,13 +423,13 @@ button:focus-visible{
 
   padding:8px 12px;
 
-  border:1px solid var(--acc-border);
+  border:1px solid var(--line);
 
   border-radius:7px;
 
-  background:var(--acc-soft-2);
+  background:#ffffff;
 
-  color:var(--acc-dark);
+  color:#1d2233;
 
   font-family:Georgia,"Times New Roman",serif;
 
@@ -415,6 +446,10 @@ button:focus-visible{
 
 }
 
+
+/* =========================================================
+   VISTA PREVIA
+   ========================================================= */
 
 .prev{
 
@@ -440,6 +475,10 @@ svg{
 }
 
 
+/* =========================================================
+   CÓDIGO LATEX
+   ========================================================= */
+
 textarea{
 
   width:100%;
@@ -448,13 +487,13 @@ textarea{
 
   padding:10px;
 
-  border:1px solid var(--acc-border);
+  border:1px solid var(--line);
 
   border-radius:7px;
 
-  background:var(--acc-soft);
+  background:#ffffff;
 
-  color:var(--text);
+  color:#1d2233;
 
   font:13px/1.5 ui-monospace,Consolas,monospace;
 
@@ -493,6 +532,10 @@ textarea{
 }
 
 
+/* =========================================================
+   BOTONES PRINCIPALES
+   ========================================================= */
+
 .btn{
 
   padding:8px 16px;
@@ -501,9 +544,9 @@ textarea{
 
   border-radius:7px;
 
-  background:var(--acc);
+  background:var(--blue);
 
-  color:var(--accfg);
+  color:#ffffff;
 
   font:inherit;
 
@@ -520,7 +563,7 @@ textarea{
 
 .btn:hover{
 
-  background:var(--acc-dark);
+  background:var(--blue-dark);
 
 }
 
@@ -596,7 +639,7 @@ textarea{
     </div>
 
 
-    <div class="hint">
+    <div class="hint-highlight">
 
       Escribí solo la expresión en LaTeX, sin usar
       <code>$</code>.
@@ -626,6 +669,7 @@ textarea{
       Puntos de la recta
     </label>
 
+
     <input
       type="text"
       id="points"
@@ -653,18 +697,10 @@ textarea{
 
       <br><br>
 
-      Ejemplos:
+      Ejemplo:
 
       <code>
         \alpha ; \frac{\pi}{2} ; \ln 3 ; \sqrt{5}
-      </code>
-
-      <br>
-
-      También podés escribir:
-
-      <code>
-        a ; \log_2 5 ; \frac{3\pi}{4} ; \beta
       </code>
 
     </div>
@@ -690,7 +726,8 @@ textarea{
       Expresión en cada intervalo
     </h2>
 
-    <div class="hint">
+
+    <div class="hint-highlight">
 
       Cada intervalo admite cualquier código LaTeX:
       <code>+</code>,
@@ -706,6 +743,7 @@ textarea{
     <div
       class="grid"
       id="intervals"
+      style="margin-top:10px"
     ></div>
 
   </section>
@@ -722,7 +760,8 @@ textarea{
       Expresión sobre cada punto
     </h2>
 
-    <div class="hint">
+
+    <div class="hint-highlight">
 
       También son campos LaTeX libres.
 
@@ -738,6 +777,7 @@ textarea{
     <div
       class="grid"
       id="tops"
+      style="margin-top:10px"
     ></div>
 
   </section>
@@ -780,7 +820,6 @@ textarea{
 
 
       <span
-        class="hint"
         id="dlmsg"
         role="status"
       ></span>
@@ -831,7 +870,6 @@ textarea{
 
 
       <span
-        class="hint"
         id="msg"
         role="status"
       ></span>
@@ -848,19 +886,11 @@ textarea{
 <script>
 
 
-/* =========================================================
-   DOM
-   ========================================================= */
-
 const $ =
   id =>
     document.getElementById(id);
 
 
-
-/* =========================================================
-   ESTADO
-   ========================================================= */
 
 let points = [];
 
@@ -880,12 +910,8 @@ let renderVersion = 0;
 
 function readPoints(){
 
-  const raw =
-    $('points')
-      .value;
-
-
-  return raw
+  return $('points')
+    .value
 
     .split(';')
 
@@ -1017,6 +1043,48 @@ function quickButton(
 
 
 /* =========================================================
+   TEXTO VISIBLE PARA NOMBRE DEL INTERVALO
+   ========================================================= */
+
+function visiblePointLabel(tex){
+
+  return String(tex)
+
+    .replace(
+      /\\infty/g,
+      '∞'
+    )
+
+    .replace(
+      /\\pi/g,
+      'π'
+    )
+
+    .replace(
+      /\\alpha/g,
+      'α'
+    )
+
+    .replace(
+      /\\beta/g,
+      'β'
+    )
+
+    .replace(
+      /\\gamma/g,
+      'γ'
+    )
+
+    .replace(
+      /\\delta/g,
+      'δ'
+    );
+
+}
+
+
+
+/* =========================================================
    CONSTRUIR CONTROLES
    ========================================================= */
 
@@ -1060,17 +1128,21 @@ function buildControls(){
     const left =
       i === 0
       ?
-      '-\\infty'
+      '−∞'
       :
-      points[i-1];
+      visiblePointLabel(
+        points[i-1]
+      );
 
 
     const right =
       i === points.length
       ?
-      '+\\infty'
+      '+∞'
       :
-      points[i];
+      visiblePointLabel(
+        points[i]
+      );
 
 
     const card =
@@ -1098,9 +1170,13 @@ function buildControls(){
     );
 
 
+/* ---------------------------------------------------------
+   NOMBRE VISIBLE DEL INTERVALO
+   --------------------------------------------------------- */
+
     const literal =
       document.createElement(
-        'code'
+        'div'
       );
 
 
@@ -1108,10 +1184,23 @@ function buildControls(){
       `(${left} ; ${right})`;
 
 
+    literal.style.fontFamily =
+      'Georgia, "Times New Roman", serif';
+
+
+    literal.style.fontSize =
+      '1rem';
+
+
     card.appendChild(
       literal
     );
 
+
+
+/* ---------------------------------------------------------
+   CAMPO LATEX
+   --------------------------------------------------------- */
 
     const input =
       document.createElement(
@@ -1151,6 +1240,11 @@ function buildControls(){
       input
     );
 
+
+
+/* ---------------------------------------------------------
+   BOTONES RÁPIDOS
+   --------------------------------------------------------- */
 
     const quick =
       document.createElement(
@@ -1260,7 +1354,7 @@ function buildControls(){
 
 
 /* =========================================================
-   SOBRE CADA PUNTO
+   SOBRE LOS PUNTOS
    ========================================================= */
 
   const T =
@@ -1303,12 +1397,22 @@ function buildControls(){
 
       const literal =
         document.createElement(
-          'code'
+          'div'
         );
 
 
       literal.textContent =
-        point;
+        visiblePointLabel(
+          point
+        );
+
+
+      literal.style.fontFamily =
+        'Georgia, "Times New Roman", serif';
+
+
+      literal.style.fontSize =
+        '1rem';
 
 
       card.appendChild(
@@ -1623,7 +1727,7 @@ async function mathFragment(
 
 
 /* =========================================================
-   EXPRESIÓN IZQUIERDA COMPLETA
+   SG + EXPRESIÓN
    ========================================================= */
 
 function fullLeftExpression(){
@@ -1798,7 +1902,7 @@ async function render(){
 
 
 /* =========================================================
-   DEFINICIÓN DE LA FLECHA
+   FLECHA
    ========================================================= */
 
   svg += `
@@ -1840,17 +1944,13 @@ async function render(){
 
 
 /* =========================================================
-   SG + EXPRESIÓN
+   EXPRESIÓN IZQUIERDA
    ========================================================= */
-
-  const left =
-    fullLeftExpression();
-
 
   svg +=
     await mathFragment(
 
-      left,
+      fullLeftExpression(),
 
       LM - 18,
 
@@ -1865,7 +1965,7 @@ async function render(){
 
 
 /* =========================================================
-   RECTA CON FLECHA
+   RECTA
    ========================================================= */
 
   svg += `
@@ -2170,21 +2270,11 @@ function generateTikz(){
   );
 
 
-  const left =
-    fullLeftExpression();
+  t.push(
 
+    `  \\node[anchor=east] at (-0.25,0) {$${fullLeftExpression()}$};`
 
-  if(
-    left
-  ){
-
-    t.push(
-
-      `  \\node[anchor=east] at (-0.25,0) {$${left}$};`
-
-    );
-
-  }
+  );
 
 
   t.push(
@@ -2293,7 +2383,7 @@ function generateTikz(){
 
 
 /* =========================================================
-   ACTUALIZAR PUNTOS
+   ACTUALIZAR
    ========================================================= */
 
 function updatePoints(){
@@ -2392,7 +2482,7 @@ async ()=>{
 
 
 /* =========================================================
-   MENSAJE
+   MENSAJES
    ========================================================= */
 
 function note(t){
@@ -2639,15 +2729,11 @@ $('dlpng').onclick =
 
 
       canvas.width =
-        lastSvg.w
-        *
-        scale;
+        lastSvg.w * scale;
 
 
       canvas.height =
-        lastSvg.h
-        *
-        scale;
+        lastSvg.h * scale;
 
 
       const ctx =
