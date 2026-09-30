@@ -1,0 +1,2633 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<title>Recta de signos → TikZ</title>
+
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&display=swap"
+>
+
+
+<!-- =========================================================
+     MATHJAX
+     Convierte LaTeX a SVG real.
+     ========================================================= -->
+
+<script>
+window.MathJax = {
+
+  tex: {
+    packages: {
+      '[+]': ['ams']
+    }
+  },
+
+  svg: {
+    fontCache: 'none'
+  },
+
+  startup: {
+    typeset: false
+  }
+
+};
+</script>
+
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+></script>
+
+
+<style>
+
+:root{
+
+  box-sizing:border-box;
+
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+
+  --bg:#eef1f7;
+  --card:#ffffff;
+  --text:#1d2233;
+  --mute:#5d6580;
+  --line:#cfd5e6;
+  --acc:#1f2a8a;
+  --accfg:#ffffff;
+  --danger:#b42318;
+
+}
+
+
+@media (prefers-color-scheme:dark){
+
+  :root:not([data-theme="light"]){
+
+    --bg:#12152a;
+    --card:#1a1f3a;
+    --text:#e6e9f7;
+    --mute:#98a0c4;
+    --line:#2e3560;
+    --acc:#a9b6ff;
+    --accfg:#12152a;
+    --danger:#ff9a92;
+
+  }
+
+}
+
+
+*,
+*::before,
+*::after{
+
+  box-sizing:inherit;
+
+}
+
+
+body{
+
+  margin:0;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  font:16px/1.5 Figtree,system-ui,sans-serif;
+
+}
+
+
+main{
+
+  max-width:1050px;
+
+  margin:0 auto;
+
+  padding:20px 16px 40px;
+
+  display:grid;
+
+  gap:16px;
+
+}
+
+
+h1{
+
+  font-size:1.5rem;
+
+  margin:0;
+
+}
+
+
+p.sub{
+
+  margin:0;
+
+  color:var(--mute);
+
+}
+
+
+section{
+
+  background:var(--card);
+
+  border:1px solid var(--line);
+
+  border-radius:10px;
+
+  padding:16px;
+
+}
+
+
+h2{
+
+  font-size:1rem;
+
+  margin:0 0 10px;
+
+}
+
+
+label{
+
+  display:block;
+
+  font-weight:600;
+
+  margin-bottom:4px;
+
+}
+
+
+input[type=text],
+select{
+
+  width:100%;
+
+  padding:8px 10px;
+
+  border:1px solid var(--line);
+
+  border-radius:6px;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  font:inherit;
+
+}
+
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible{
+
+  outline:2px solid var(--acc);
+
+  outline-offset:2px;
+
+}
+
+
+.hint{
+
+  color:var(--mute);
+
+  font-size:.875rem;
+
+  margin-top:4px;
+
+}
+
+
+.info{
+
+  margin-top:10px;
+
+  padding:10px 12px;
+
+  border:1px solid var(--line);
+
+  border-radius:6px;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  font-size:.9rem;
+
+  line-height:1.55;
+
+}
+
+
+.info code,
+.hint code{
+
+  font-family:ui-monospace,Consolas,monospace;
+
+}
+
+
+.grid{
+
+  display:grid;
+
+  gap:10px;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(230px,1fr)
+    );
+
+}
+
+
+.cell{
+
+  border:1px solid var(--line);
+
+  border-radius:6px;
+
+  padding:10px;
+
+  display:grid;
+
+  gap:7px;
+
+}
+
+
+.cell b{
+
+  font-weight:600;
+
+}
+
+
+.cell code{
+
+  font-family:ui-monospace,Consolas,monospace;
+
+  font-size:.84rem;
+
+  overflow-wrap:anywhere;
+
+}
+
+
+.quick{
+
+  display:flex;
+
+  gap:4px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.quick button{
+
+  min-width:42px;
+
+  padding:5px 8px;
+
+  border:1px solid var(--line);
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  border-radius:6px;
+
+  font:inherit;
+
+  cursor:pointer;
+
+}
+
+
+.prev{
+
+  overflow-x:auto;
+
+  min-height:160px;
+
+}
+
+
+svg{
+
+  display:block;
+
+  margin:0 auto;
+
+  max-width:none;
+
+  color:var(--text);
+
+}
+
+
+textarea{
+
+  width:100%;
+
+  min-height:220px;
+
+  padding:10px;
+
+  border:1px solid var(--line);
+
+  border-radius:6px;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  font:13px/1.5 ui-monospace,Consolas,monospace;
+
+  resize:vertical;
+
+}
+
+
+.row{
+
+  display:flex;
+
+  gap:12px;
+
+  align-items:center;
+
+  flex-wrap:wrap;
+
+  margin-top:8px;
+
+}
+
+
+.row label{
+
+  display:inline-flex;
+
+  gap:6px;
+
+  align-items:center;
+
+  font-weight:400;
+
+  margin:0;
+
+}
+
+
+.btn{
+
+  padding:8px 16px;
+
+  border:0;
+
+  border-radius:6px;
+
+  background:var(--acc);
+
+  color:var(--accfg);
+
+  font:inherit;
+
+  font-weight:600;
+
+  cursor:pointer;
+
+}
+
+
+.err{
+
+  color:var(--danger);
+
+  font-size:.9rem;
+
+  margin-top:6px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main>
+
+
+  <div>
+
+    <h1>
+      Recta de signos
+    </h1>
+
+    <p class="sub">
+      Generador de rectas de signos con LaTeX, SVG, PNG y TikZ.
+    </p>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       EXPRESIÓN IZQUIERDA
+       ===================================================== -->
+
+  <section>
+
+    <label for="leftExpr">
+      Expresión que precede a la recta
+    </label>
+
+    <input
+      type="text"
+      id="leftExpr"
+      value="\operatorname{Sg}\,f'"
+      autocomplete="off"
+      spellcheck="false"
+    >
+
+    <div class="hint">
+
+      Escribí directamente en LaTeX, sin usar
+      <code>$</code>.
+
+      Ejemplos:
+      <code>\operatorname{Sg}\,f'</code>,
+      <code>\operatorname{Sg}\,g(x)</code>,
+      <code>\operatorname{Sg}\left(\frac{f}{g}\right)</code>.
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       PUNTOS
+       ===================================================== -->
+
+  <section>
+
+    <label for="points">
+      Puntos de la recta
+    </label>
+
+    <input
+      type="text"
+      id="points"
+      value="-1 ; 2 ; 5"
+      autocomplete="off"
+      spellcheck="false"
+    >
+
+
+    <div class="info">
+
+      <strong>Importante:</strong>
+
+      todos los puntos se escriben en
+      <strong>LaTeX</strong>, sin usar los signos
+      <code>$</code>.
+
+      Separá los puntos mediante punto y coma
+      <code>;</code>.
+
+      Los puntos se mostrarán
+      <strong>exactamente en el orden en que los ingreses</strong>.
+
+      No se realiza ningún ordenamiento automático.
+
+      <br><br>
+
+      Ejemplos:
+
+      <code>
+        \alpha ; \frac{\pi}{2} ; \ln 3 ; \sqrt{5}
+      </code>
+
+      <br>
+
+      También podés escribir:
+
+      <code>
+        a ; \log_2 5 ; \frac{3\pi}{4} ; \beta
+      </code>
+
+    </div>
+
+
+    <div
+      class="err"
+      id="err"
+      role="alert"
+    ></div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       INTERVALOS
+       ===================================================== -->
+
+  <section>
+
+    <h2>
+      Expresión en cada intervalo
+    </h2>
+
+    <div class="hint">
+
+      Cada intervalo admite cualquier código LaTeX:
+      <code>+</code>,
+      <code>-</code>,
+      <code>\nexists</code>,
+      <code>\leq 0</code>,
+      <code>\sin x</code>,
+      etc.
+
+    </div>
+
+    <div
+      class="grid"
+      id="intervals"
+    ></div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       SOBRE LOS PUNTOS
+       ===================================================== -->
+
+  <section>
+
+    <h2>
+      Expresión sobre cada punto
+    </h2>
+
+    <div class="hint">
+
+      También son campos LaTeX libres.
+
+      Ejemplos:
+      <code>0</code>,
+      <code>\nexists</code>,
+      <code>+\infty</code>,
+      <code>f'(\alpha)</code>.
+
+    </div>
+
+    <div
+      class="grid"
+      id="tops"
+    ></div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       VISTA PREVIA
+       ===================================================== -->
+
+  <section>
+
+    <h2>
+      Vista previa
+    </h2>
+
+    <div
+      class="prev"
+      id="prev"
+    ></div>
+
+
+    <div class="row">
+
+      <button
+        class="btn"
+        id="dlpng"
+      >
+        Descargar PNG
+      </button>
+
+
+      <button
+        class="btn"
+        id="dlsvg"
+      >
+        Descargar SVG
+      </button>
+
+
+      <span
+        class="hint"
+        id="dlmsg"
+        role="status"
+      ></span>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       CÓDIGO LATEX
+       ===================================================== -->
+
+  <section>
+
+    <h2>
+      Código LaTeX
+    </h2>
+
+
+    <textarea
+      id="code"
+      readonly
+    ></textarea>
+
+
+    <div class="row">
+
+      <button
+        class="btn"
+        id="copy"
+      >
+        Copiar código
+      </button>
+
+
+      <label>
+
+        <input
+          type="checkbox"
+          id="full"
+        >
+
+        Documento completo (standalone)
+
+      </label>
+
+
+      <span
+        class="hint"
+        id="msg"
+        role="status"
+      ></span>
+
+    </div>
+
+  </section>
+
+
+</main>
+
+
+
+<script>
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+
+let points = [];
+
+let intervalValues = [];
+
+let topValues = [];
+
+let lastSvg = null;
+
+let renderVersion = 0;
+
+
+
+/* =========================================================
+   LEER PUNTOS
+   ========================================================= */
+
+function readPoints(){
+
+  const raw =
+    $('points')
+      .value;
+
+
+  return raw
+
+    .split(';')
+
+    .map(
+      s =>
+        s.trim()
+    )
+
+    .filter(
+      Boolean
+    );
+
+}
+
+
+
+/* =========================================================
+   PREPARAR ESTADO
+   ========================================================= */
+
+function prepareState(){
+
+  points =
+    readPoints();
+
+
+  if(
+    points.length === 0
+  ){
+
+    $('err').textContent =
+      'Ingresá al menos un punto.';
+
+    return false;
+
+  }
+
+
+  $('err').textContent =
+    '';
+
+
+  while(
+    intervalValues.length
+    <
+    points.length + 1
+  ){
+
+    const i =
+      intervalValues.length;
+
+
+    intervalValues.push(
+      i % 2 === 0
+      ?
+      '+'
+      :
+      '-'
+    );
+
+  }
+
+
+  intervalValues.length =
+    points.length + 1;
+
+
+  while(
+    topValues.length
+    <
+    points.length
+  ){
+
+    topValues.push(
+      '0'
+    );
+
+  }
+
+
+  topValues.length =
+    points.length;
+
+
+  return true;
+
+}
+
+
+
+/* =========================================================
+   BOTÓN RÁPIDO
+   ========================================================= */
+
+function quickButton(
+  label,
+  value,
+  action
+){
+
+  const b =
+    document.createElement(
+      'button'
+    );
+
+
+  b.type =
+    'button';
+
+
+  b.textContent =
+    label;
+
+
+  b.onclick =
+    ()=>{
+
+      action(
+        value
+      );
+
+    };
+
+
+  return b;
+
+}
+
+
+
+/* =========================================================
+   CONSTRUIR CONTROLES
+   ========================================================= */
+
+function buildControls(){
+
+  if(
+    !prepareState()
+  ){
+
+    $('intervals').innerHTML =
+      '';
+
+    $('tops').innerHTML =
+      '';
+
+    return;
+
+  }
+
+
+
+/* =========================================================
+   INTERVALOS
+   ========================================================= */
+
+  const I =
+    $('intervals');
+
+
+  I.innerHTML =
+    '';
+
+
+  for(
+    let i=0;
+    i<=points.length;
+    i++
+  ){
+
+
+    const left =
+      i === 0
+      ?
+      '-\\infty'
+      :
+      points[i-1];
+
+
+    const right =
+      i === points.length
+      ?
+      '+\\infty'
+      :
+      points[i];
+
+
+    const card =
+      document.createElement(
+        'div'
+      );
+
+
+    card.className =
+      'cell';
+
+
+    const title =
+      document.createElement(
+        'b'
+      );
+
+
+    title.textContent =
+      `Intervalo ${i+1}`;
+
+
+    card.appendChild(
+      title
+    );
+
+
+    const literal =
+      document.createElement(
+        'code'
+      );
+
+
+    literal.textContent =
+      `(${left} ; ${right})`;
+
+
+    card.appendChild(
+      literal
+    );
+
+
+    const input =
+      document.createElement(
+        'input'
+      );
+
+
+    input.type =
+      'text';
+
+
+    input.spellcheck =
+      false;
+
+
+    input.value =
+      intervalValues[i];
+
+
+    input.placeholder =
+      'LaTeX';
+
+
+    input.oninput =
+      ()=>{
+
+        intervalValues[i] =
+          input.value;
+
+
+        render();
+
+      };
+
+
+    card.appendChild(
+      input
+    );
+
+
+    const quick =
+      document.createElement(
+        'div'
+      );
+
+
+    quick.className =
+      'quick';
+
+
+    quick.appendChild(
+
+      quickButton(
+        '+',
+        '+',
+        v=>{
+
+          intervalValues[i] =
+            v;
+
+          input.value =
+            v;
+
+          render();
+
+        }
+      )
+
+    );
+
+
+    quick.appendChild(
+
+      quickButton(
+        '−',
+        '-',
+        v=>{
+
+          intervalValues[i] =
+            v;
+
+          input.value =
+            v;
+
+          render();
+
+        }
+      )
+
+    );
+
+
+    quick.appendChild(
+
+      quickButton(
+        '∄',
+        '\\nexists',
+        v=>{
+
+          intervalValues[i] =
+            v;
+
+          input.value =
+            v;
+
+          render();
+
+        }
+      )
+
+    );
+
+
+    quick.appendChild(
+
+      quickButton(
+        'vacío',
+        '',
+        v=>{
+
+          intervalValues[i] =
+            v;
+
+          input.value =
+            v;
+
+          render();
+
+        }
+      )
+
+    );
+
+
+    card.appendChild(
+      quick
+    );
+
+
+    I.appendChild(
+      card
+    );
+
+  }
+
+
+
+/* =========================================================
+   SOBRE CADA PUNTO
+   ========================================================= */
+
+  const T =
+    $('tops');
+
+
+  T.innerHTML =
+    '';
+
+
+  points.forEach(
+
+    (point,i)=>{
+
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'cell';
+
+
+      const title =
+        document.createElement(
+          'b'
+        );
+
+
+      title.textContent =
+        `Punto ${i+1}`;
+
+
+      card.appendChild(
+        title
+      );
+
+
+      const literal =
+        document.createElement(
+          'code'
+        );
+
+
+      literal.textContent =
+        point;
+
+
+      card.appendChild(
+        literal
+      );
+
+
+      const input =
+        document.createElement(
+          'input'
+        );
+
+
+      input.type =
+        'text';
+
+
+      input.spellcheck =
+        false;
+
+
+      input.value =
+        topValues[i];
+
+
+      input.placeholder =
+        'LaTeX';
+
+
+      input.oninput =
+        ()=>{
+
+          topValues[i] =
+            input.value;
+
+
+          render();
+
+        };
+
+
+      card.appendChild(
+        input
+      );
+
+
+      const quick =
+        document.createElement(
+          'div'
+        );
+
+
+      quick.className =
+        'quick';
+
+
+      quick.appendChild(
+
+        quickButton(
+          '0',
+          '0',
+          v=>{
+
+            topValues[i] =
+              v;
+
+            input.value =
+              v;
+
+            render();
+
+          }
+        )
+
+      );
+
+
+      quick.appendChild(
+
+        quickButton(
+          '∄',
+          '\\nexists',
+          v=>{
+
+            topValues[i] =
+              v;
+
+            input.value =
+              v;
+
+            render();
+
+          }
+        )
+
+      );
+
+
+      quick.appendChild(
+
+        quickButton(
+          'vacío',
+          '',
+          v=>{
+
+            topValues[i] =
+              v;
+
+            input.value =
+              v;
+
+            render();
+
+          }
+        )
+
+      );
+
+
+      card.appendChild(
+        quick
+      );
+
+
+      T.appendChild(
+        card
+      );
+
+    }
+
+  );
+
+}
+
+
+
+/* =========================================================
+   LATEX → SVG
+   ========================================================= */
+
+async function mathFragment(
+  tex,
+  x,
+  y,
+  height,
+  align='center'
+){
+
+  if(
+    !tex
+    ||
+    !String(tex).trim()
+  ){
+
+    return '';
+
+  }
+
+
+  try{
+
+
+    await MathJax.startup.promise;
+
+
+    const container =
+      await MathJax.tex2svgPromise(
+
+        String(tex),
+
+        {
+          display:false
+        }
+
+      );
+
+
+    const source =
+      container.querySelector(
+        'svg'
+      );
+
+
+    if(
+      !source
+    ){
+
+      return '';
+
+    }
+
+
+    const viewBox =
+      source
+        .getAttribute(
+          'viewBox'
+        )
+        .trim()
+        .split(/\s+/)
+        .map(Number);
+
+
+    const vbX =
+      viewBox[0];
+
+
+    const vbY =
+      viewBox[1];
+
+
+    const vbW =
+      viewBox[2];
+
+
+    const vbH =
+      viewBox[3];
+
+
+    if(
+      !vbW
+      ||
+      !vbH
+    ){
+
+      return '';
+
+    }
+
+
+    const width =
+      height
+      *
+      vbW
+      /
+      vbH;
+
+
+    let drawX;
+
+
+    if(
+      align === 'right'
+    ){
+
+      drawX =
+        x - width;
+
+    }
+
+    else{
+
+      drawX =
+        x - width/2;
+
+    }
+
+
+    const drawY =
+      y - height/2;
+
+
+    const inside =
+      source.innerHTML;
+
+
+    return `
+
+      <svg
+
+        x="${drawX}"
+
+        y="${drawY}"
+
+        width="${width}"
+
+        height="${height}"
+
+        viewBox="${vbX} ${vbY} ${vbW} ${vbH}"
+
+        preserveAspectRatio="xMidYMid meet"
+
+        overflow="visible"
+
+        color="currentColor"
+
+      >
+
+        ${inside}
+
+      </svg>
+
+    `;
+
+  }
+
+
+  catch(e){
+
+    console.error(
+      'Error LaTeX:',
+      tex,
+      e
+    );
+
+
+    return '';
+
+  }
+
+}
+
+
+
+/* =========================================================
+   RENDER PRINCIPAL
+   ========================================================= */
+
+async function render(){
+
+
+  const myVersion =
+    ++renderVersion;
+
+
+  if(
+    !prepareState()
+  ){
+
+    $('prev').innerHTML =
+      '';
+
+    $('code').value =
+      '';
+
+    return;
+
+  }
+
+
+  await MathJax.startup.promise;
+
+
+  if(
+    myVersion
+    !==
+    renderVersion
+  ){
+
+    return;
+
+  }
+
+
+  const n =
+    points.length;
+
+
+  const U =
+    175;
+
+
+  const LM =
+    235;
+
+
+  const RM =
+    95;
+
+
+  const y0 =
+    95;
+
+
+  const H =
+    165;
+
+
+  const xs =
+    points.map(
+
+      (_,i)=>
+        LM
+        +
+        U
+        +
+        i*U
+
+    );
+
+
+  const lineEnd =
+    n === 1
+    ?
+    LM + 2*U
+    :
+    xs[n-1] + U;
+
+
+  const W =
+    lineEnd + RM;
+
+
+  const centers =
+    [];
+
+
+  centers.push(
+    LM + U/2
+  );
+
+
+  for(
+    let i=1;
+    i<n;
+    i++
+  ){
+
+    centers.push(
+
+      (
+        xs[i-1]
+        +
+        xs[i]
+      )/2
+
+    );
+
+  }
+
+
+  centers.push(
+
+    xs[n-1]
+    +
+    U/2
+
+  );
+
+
+  let svg =
+
+    `<svg
+
+      xmlns="http://www.w3.org/2000/svg"
+
+      width="${W}"
+
+      height="${H}"
+
+      viewBox="0 0 ${W} ${H}"
+
+      role="img"
+
+      aria-label="Recta de signos"
+
+      color="currentColor"
+
+    >`;
+
+
+/* =========================================================
+   DEFINICIÓN DE LA FLECHA
+   ========================================================= */
+
+  svg += `
+
+    <defs>
+
+      <marker
+
+        id="arrow"
+
+        markerWidth="10"
+
+        markerHeight="10"
+
+        refX="9"
+
+        refY="3"
+
+        orient="auto"
+
+        markerUnits="strokeWidth"
+
+      >
+
+        <path
+
+          d="M0,0 L0,6 L9,3 z"
+
+          fill="currentColor"
+
+        />
+
+      </marker>
+
+    </defs>
+
+  `;
+
+
+/* =========================================================
+   EXPRESIÓN IZQUIERDA
+   ========================================================= */
+
+  const left =
+    $('leftExpr')
+      .value
+      .trim();
+
+
+  svg +=
+    await mathFragment(
+
+      left,
+
+      LM - 18,
+
+      y0,
+
+      31,
+
+      'right'
+
+    );
+
+
+/* =========================================================
+   RECTA CON FLECHA A LA DERECHA
+   ========================================================= */
+
+  svg += `
+
+    <line
+
+      x1="${LM}"
+
+      y1="${y0}"
+
+      x2="${lineEnd}"
+
+      y2="${y0}"
+
+      stroke="currentColor"
+
+      stroke-width="1.6"
+
+      marker-end="url(#arrow)"
+
+    />
+
+  `;
+
+
+/* =========================================================
+   PUNTOS
+   ========================================================= */
+
+  for(
+    let i=0;
+    i<n;
+    i++
+  ){
+
+
+    const x =
+      xs[i];
+
+
+    const top =
+      topValues[i]
+        .trim();
+
+
+    svg += `
+
+      <line
+
+        x1="${x}"
+
+        y1="${y0+7}"
+
+        x2="${x}"
+
+        y2="${y0-8}"
+
+        stroke="currentColor"
+
+        stroke-width="1.6"
+
+      />
+
+    `;
+
+
+    svg +=
+      await mathFragment(
+
+        points[i],
+
+        x,
+
+        y0 + 32,
+
+        28,
+
+        'center'
+
+      );
+
+
+    if(
+      top
+    ){
+
+      svg +=
+        await mathFragment(
+
+          top,
+
+          x,
+
+          y0 - 31,
+
+          29,
+
+          'center'
+
+        );
+
+    }
+
+  }
+
+
+/* =========================================================
+   INTERVALOS
+   ========================================================= */
+
+  for(
+    let i=0;
+    i<intervalValues.length;
+    i++
+  ){
+
+
+    const tex =
+      intervalValues[i]
+        .trim();
+
+
+    if(
+      !tex
+    ){
+
+      continue;
+
+    }
+
+
+    svg +=
+      await mathFragment(
+
+        tex,
+
+        centers[i],
+
+        y0 - 31,
+
+        29,
+
+        'center'
+
+      );
+
+  }
+
+
+  svg +=
+    '</svg>';
+
+
+  if(
+    myVersion
+    !==
+    renderVersion
+  ){
+
+    return;
+
+  }
+
+
+  lastSvg = {
+
+    svg,
+
+    w:W,
+
+    h:H
+
+  };
+
+
+  $('prev').innerHTML =
+    svg;
+
+
+  generateTikz();
+
+}
+
+
+
+/* =========================================================
+   GENERAR TIKZ
+   ========================================================= */
+
+function generateTikz(){
+
+
+  const n =
+    points.length;
+
+
+  if(
+    !n
+  ){
+
+    $('code').value =
+      '';
+
+    return;
+
+  }
+
+
+  const X0 =
+    2;
+
+
+  const DX =
+    3;
+
+
+  const L =
+    X0
+    +
+    DX*(n-1)
+    +
+    2;
+
+
+  const xs =
+    points.map(
+
+      (_,i)=>
+        X0
+        +
+        DX*i
+
+    );
+
+
+  const centers =
+    [];
+
+
+  centers.push(
+    1
+  );
+
+
+  for(
+    let i=1;
+    i<n;
+    i++
+  ){
+
+    centers.push(
+
+      (
+        xs[i-1]
+        +
+        xs[i]
+      )/2
+
+    );
+
+  }
+
+
+  centers.push(
+
+    xs[n-1]
+    +
+    1
+
+  );
+
+
+  let t =
+    [];
+
+
+  if(
+    $('full').checked
+  ){
+
+    t.push(
+
+      '\\documentclass[border=5pt]{standalone}',
+
+      '\\usepackage{tikz}',
+
+      '\\usepackage{amsmath}',
+
+      '\\usepackage{amssymb}',
+
+      '\\begin{document}'
+
+    );
+
+  }
+
+
+  t.push(
+    '\\begin{tikzpicture}'
+  );
+
+
+  const left =
+    $('leftExpr')
+      .value
+      .trim();
+
+
+  if(
+    left
+  ){
+
+    t.push(
+
+      `  \\node[anchor=east] at (-0.25,0) {$${left}$};`
+
+    );
+
+  }
+
+
+/* =========================================================
+   RECTA TIKZ CON FLECHA
+   ========================================================= */
+
+  t.push(
+
+    `  \\draw[->] (0,0) -- (${L},0);`
+
+  );
+
+
+  for(
+    let i=0;
+    i<n;
+    i++
+  ){
+
+
+    const x =
+      xs[i];
+
+
+    t.push(
+
+      `  \\draw (${x},-0.12) -- (${x},0.12);`
+
+    );
+
+
+    t.push(
+
+      `  \\node[below=2pt] at (${x},-0.12) {$${points[i]}$};`
+
+    );
+
+
+    const top =
+      topValues[i]
+        .trim();
+
+
+    if(
+      top
+    ){
+
+      t.push(
+
+        `  \\node at (${x},0.5) {$${top}$};`
+
+      );
+
+    }
+
+  }
+
+
+  for(
+    let i=0;
+    i<intervalValues.length;
+    i++
+  ){
+
+
+    const tex =
+      intervalValues[i]
+        .trim();
+
+
+    if(
+      !tex
+    ){
+
+      continue;
+
+    }
+
+
+    t.push(
+
+      `  \\node at (${centers[i]},0.5) {$${tex}$};`
+
+    );
+
+  }
+
+
+  t.push(
+    '\\end{tikzpicture}'
+  );
+
+
+  if(
+    $('full').checked
+  ){
+
+    t.push(
+      '\\end{document}'
+    );
+
+  }
+
+
+  $('code').value =
+    t.join('\n');
+
+}
+
+
+
+/* =========================================================
+   ACTUALIZAR PUNTOS
+   ========================================================= */
+
+function updatePoints(){
+
+  buildControls();
+
+  render();
+
+}
+
+
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+$('points').addEventListener(
+
+  'input',
+
+  updatePoints
+
+);
+
+
+$('leftExpr').addEventListener(
+
+  'input',
+
+  render
+
+);
+
+
+$('full').addEventListener(
+
+  'change',
+
+  generateTikz
+
+);
+
+
+
+/* =========================================================
+   COPIAR
+   ========================================================= */
+
+$('copy').onclick =
+async ()=>{
+
+
+  const ta =
+    $('code');
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      ta.value
+    );
+
+  }
+
+
+  catch(e){
+
+    ta.select();
+
+
+    document.execCommand(
+      'copy'
+    );
+
+  }
+
+
+  $('msg').textContent =
+    'Copiado';
+
+
+  setTimeout(
+
+    ()=>{
+
+      $('msg').textContent =
+        '';
+
+    },
+
+    1800
+
+  );
+
+};
+
+
+
+/* =========================================================
+   MENSAJE
+   ========================================================= */
+
+function note(t){
+
+
+  $('dlmsg').textContent =
+    t;
+
+
+  setTimeout(
+
+    ()=>{
+
+      $('dlmsg').textContent =
+        '';
+
+    },
+
+    2500
+
+  );
+
+}
+
+
+
+/* =========================================================
+   SVG EXPORTABLE
+   ========================================================= */
+
+function exportSvg(){
+
+
+  if(
+    !lastSvg
+  ){
+
+    return '';
+
+  }
+
+
+  return lastSvg.svg.replace(
+
+    /currentColor/g,
+
+    '#000000'
+
+  );
+
+}
+
+
+
+/* =========================================================
+   GUARDAR
+   ========================================================= */
+
+function save(
+  filename,
+  data,
+  type
+){
+
+
+  try{
+
+
+    let blob;
+
+
+    if(
+      data instanceof Blob
+    ){
+
+      blob =
+        data;
+
+    }
+
+
+    else{
+
+      blob =
+        new Blob(
+
+          [data],
+
+          {
+            type:
+              type
+          }
+
+        );
+
+    }
+
+
+    const url =
+      URL.createObjectURL(
+        blob
+      );
+
+
+    const a =
+      document.createElement(
+        'a'
+      );
+
+
+    a.href =
+      url;
+
+
+    a.download =
+      filename;
+
+
+    document.body.appendChild(
+      a
+    );
+
+
+    a.click();
+
+
+    a.remove();
+
+
+    setTimeout(
+
+      ()=>{
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      },
+
+      1000
+
+    );
+
+
+    note(
+      'Archivo descargado'
+    );
+
+  }
+
+
+  catch(e){
+
+
+    console.error(
+      e
+    );
+
+
+    note(
+      'No se pudo descargar el archivo'
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   DESCARGAR SVG
+   ========================================================= */
+
+$('dlsvg').onclick =
+()=>{
+
+
+  if(
+    !lastSvg
+  ){
+
+    note(
+      'No hay imagen para descargar'
+    );
+
+
+    return;
+
+  }
+
+
+  save(
+
+    'recta-de-signos.svg',
+
+    exportSvg(),
+
+    'image/svg+xml;charset=utf-8'
+
+  );
+
+};
+
+
+
+/* =========================================================
+   DESCARGAR PNG
+   ========================================================= */
+
+$('dlpng').onclick =
+()=>{
+
+
+  if(
+    !lastSvg
+  ){
+
+    note(
+      'No hay imagen para descargar'
+    );
+
+
+    return;
+
+  }
+
+
+  const scale =
+    3;
+
+
+  const img =
+    new Image();
+
+
+  img.onload =
+    ()=>{
+
+
+      const canvas =
+        document.createElement(
+          'canvas'
+        );
+
+
+      canvas.width =
+        lastSvg.w
+        *
+        scale;
+
+
+      canvas.height =
+        lastSvg.h
+        *
+        scale;
+
+
+      const ctx =
+        canvas.getContext(
+          '2d'
+        );
+
+
+      ctx.fillStyle =
+        '#ffffff';
+
+
+      ctx.fillRect(
+
+        0,
+
+        0,
+
+        canvas.width,
+
+        canvas.height
+
+      );
+
+
+      ctx.drawImage(
+
+        img,
+
+        0,
+
+        0,
+
+        canvas.width,
+
+        canvas.height
+
+      );
+
+
+      canvas.toBlob(
+
+        blob=>{
+
+
+          if(
+            !blob
+          ){
+
+            note(
+              'No se pudo generar el PNG'
+            );
+
+
+            return;
+
+          }
+
+
+          save(
+
+            'recta-de-signos.png',
+
+            blob,
+
+            'image/png'
+
+          );
+
+        },
+
+        'image/png'
+
+      );
+
+    };
+
+
+  img.onerror =
+    ()=>{
+
+
+      note(
+        'No se pudo generar el PNG'
+      );
+
+    };
+
+
+  img.src =
+
+    'data:image/svg+xml;charset=utf-8,'
+
+    +
+
+    encodeURIComponent(
+      exportSvg()
+    );
+
+};
+
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+window.addEventListener(
+
+  'load',
+
+  async ()=>{
+
+
+    await MathJax.startup.promise;
+
+
+    buildControls();
+
+
+    render();
+
+  }
+
+);
+
+
+</script>
+
+
+</body>
+
+</html>
