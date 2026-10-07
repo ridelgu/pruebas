@@ -381,10 +381,6 @@ button:focus-visible{
 }
 
 
-/* =========================================================
-   CELULARES
-   ========================================================= */
-
 @media (max-width:600px){
 
   body{
@@ -465,10 +461,6 @@ button:focus-visible{
   </div>
 
 
-  <!-- =====================================================
-       EXPRESIÓN
-       ===================================================== -->
-
   <section>
 
     <label for="leftExpr">
@@ -476,7 +468,7 @@ button:focus-visible{
     </label>
 
     <div class="hint-highlight">
-      Escribí solo la expresión en LaTeX, sin usar <code>$</code>.
+      Escribe solo la expresión en LaTeX, sin usar <code>$</code>.
       Se agregará automáticamente <code>\operatorname{Sg}</code>.
       Ejemplos:
       <code>f'</code>,
@@ -504,10 +496,6 @@ button:focus-visible{
   </section>
 
 
-  <!-- =====================================================
-       PUNTOS
-       ===================================================== -->
-
   <section>
 
     <label for="points">
@@ -518,7 +506,7 @@ button:focus-visible{
       <strong>Importante:</strong>
       todos los puntos se escriben en <strong>LaTeX</strong>, sin usar
       los signos <code>$</code>.
-      Separá los puntos mediante punto y coma <code>;</code>.
+      Separa los puntos mediante punto y coma <code>;</code>.
       Los puntos se mostrarán <strong>exactamente en el orden en que los ingreses</strong>.
       No se realiza ningún ordenamiento automático.
       <br><br>
@@ -542,10 +530,6 @@ button:focus-visible{
 
   </section>
 
-
-  <!-- =====================================================
-       INTERVALOS
-       ===================================================== -->
 
   <section>
 
@@ -571,10 +555,6 @@ button:focus-visible{
   </section>
 
 
-  <!-- =====================================================
-       SOBRE LOS PUNTOS
-       ===================================================== -->
-
   <section>
 
     <h2>
@@ -588,7 +568,7 @@ button:focus-visible{
       <code>\nexists</code>,
       <code>+\infty</code>,
       <code>f'(\alpha)</code>.
-      Si activás <strong>Multiplicidad par</strong>,
+      Si activas <strong>Multiplicidad par</strong>,
       el punto se dibuja con dos rayitas verticales.
     </div>
 
@@ -600,10 +580,6 @@ button:focus-visible{
   </section>
 
 
-  <!-- =====================================================
-       SÍMBOLO JUNTO A LA FLECHA
-       ===================================================== -->
-
   <section>
 
     <label for="arrowLabel">
@@ -611,7 +587,7 @@ button:focus-visible{
     </label>
 
     <div class="hint-highlight">
-      Escribí el símbolo o expresión que querés mostrar
+      Escribe el símbolo o expresión que quieres mostrar
       debajo de la recta, cerca de la flecha.
       Se admite LaTeX.
       Ejemplos:
@@ -619,7 +595,7 @@ button:focus-visible{
       <code>t</code>,
       <code>\theta</code>,
       <code>x_1</code>.
-      Dejalo vacío si no querés mostrar nada.
+      Déjalo vacío si no quieres mostrar nada.
     </div>
 
     <input
@@ -632,10 +608,6 @@ button:focus-visible{
 
   </section>
 
-
-  <!-- =====================================================
-       DESCARGA Y TIKZ
-       ===================================================== -->
 
   <section>
 
@@ -703,10 +675,6 @@ button:focus-visible{
 </main>
 
 
-<!-- =======================================================
-     PREVISUALIZACIÓN FIJA
-     ======================================================= -->
-
 <div class="preview-dock">
 
   <div class="preview-dock-inner">
@@ -740,10 +708,6 @@ let lastSvg = null;
 let renderVersion = 0;
 
 
-/* =========================================================
-   PUNTOS
-   ========================================================= */
-
 function readPoints(){
 
   return $('points')
@@ -757,10 +721,6 @@ function readPoints(){
 }
 
 
-/* =========================================================
-   ESTADO
-   ========================================================= */
-
 function prepareState(){
 
   points =
@@ -770,7 +730,7 @@ function prepareState(){
   if(points.length === 0){
 
     $('err').textContent =
-      'Ingresá al menos un punto.';
+      'Ingresa al menos un punto.';
 
     return false;
 
@@ -821,10 +781,6 @@ function prepareState(){
 }
 
 
-/* =========================================================
-   BOTÓN RÁPIDO
-   ========================================================= */
-
 function quickButton(
   label,
   value,
@@ -848,10 +804,6 @@ function quickButton(
 }
 
 
-/* =========================================================
-   TEXTO VISIBLE
-   ========================================================= */
-
 function visiblePointLabel(tex){
 
   return String(tex)
@@ -869,10 +821,6 @@ function visiblePointLabel(tex){
 
 }
 
-
-/* =========================================================
-   CONTROLES
-   ========================================================= */
 
 function buildControls(){
 
@@ -1136,10 +1084,6 @@ function buildControls(){
 }
 
 
-/* =========================================================
-   LATEX → SVG
-   ========================================================= */
-
 async function mathFragment(
   tex,
   x,
@@ -1245,10 +1189,6 @@ async function mathFragment(
 }
 
 
-/* =========================================================
-   SG
-   ========================================================= */
-
 function fullLeftExpression(){
 
   const expr =
@@ -1266,10 +1206,6 @@ function fullLeftExpression(){
 
 }
 
-
-/* =========================================================
-   RENDER
-   ========================================================= */
 
 async function render(){
 
@@ -1390,8 +1326,6 @@ async function render(){
   `;
 
 
-  /* SG + expresión */
-
   svg +=
     await mathFragment(
       fullLeftExpression(),
@@ -1401,8 +1335,6 @@ async function render(){
       'right'
     );
 
-
-  /* recta */
 
   svg += `
     <line
@@ -1416,8 +1348,6 @@ async function render(){
     />
   `;
 
-
-  /* símbolo cerca de la flecha */
 
   const arrowLabel =
     $('arrowLabel')
@@ -1438,8 +1368,6 @@ async function render(){
 
   }
 
-
-  /* puntos */
 
   for(let i=0; i<n; i++){
 
@@ -1519,8 +1447,6 @@ async function render(){
   }
 
 
-  /* intervalos */
-
   for(let i=0; i<intervalValues.length; i++){
 
     const tex =
@@ -1568,10 +1494,6 @@ async function render(){
 
 }
 
-
-/* =========================================================
-   TIKZ
-   ========================================================= */
 
 function generateTikz(){
 
@@ -1659,8 +1581,6 @@ function generateTikz(){
   );
 
 
-  /* símbolo cerca de la flecha */
-
   const arrowLabel =
     $('arrowLabel')
       .value
@@ -1675,8 +1595,6 @@ function generateTikz(){
 
   }
 
-
-  /* puntos */
 
   for(let i=0; i<n; i++){
 
@@ -1729,8 +1647,6 @@ function generateTikz(){
   }
 
 
-  /* intervalos */
-
   for(let i=0; i<intervalValues.length; i++){
 
     const tex =
@@ -1769,10 +1685,6 @@ function generateTikz(){
 }
 
 
-/* =========================================================
-   ACTUALIZAR
-   ========================================================= */
-
 function updatePoints(){
 
   buildControls();
@@ -1780,10 +1692,6 @@ function updatePoints(){
 
 }
 
-
-/* =========================================================
-   EVENTOS
-   ========================================================= */
 
 $('points').addEventListener(
   'input',
@@ -1808,10 +1716,6 @@ $('full').addEventListener(
   generateTikz
 );
 
-
-/* =========================================================
-   COPIAR
-   ========================================================= */
 
 $('copy').onclick =
 async ()=>{
@@ -1853,10 +1757,6 @@ async ()=>{
 };
 
 
-/* =========================================================
-   MENSAJES
-   ========================================================= */
-
 function note(t){
 
   $('dlmsg').textContent =
@@ -1873,10 +1773,6 @@ function note(t){
 }
 
 
-/* =========================================================
-   EXPORTAR SVG
-   ========================================================= */
-
 function exportSvg(){
 
   if(!lastSvg){
@@ -1891,10 +1787,6 @@ function exportSvg(){
 
 }
 
-
-/* =========================================================
-   GUARDAR
-   ========================================================= */
 
 function save(
   filename,
@@ -1977,10 +1869,6 @@ function save(
 }
 
 
-/* =========================================================
-   SVG
-   ========================================================= */
-
 $('dlsvg').onclick =
 ()=>{
 
@@ -2003,10 +1891,6 @@ $('dlsvg').onclick =
 
 };
 
-
-/* =========================================================
-   PNG
-   ========================================================= */
 
 $('dlpng').onclick =
 ()=>{
@@ -2115,10 +1999,6 @@ $('dlpng').onclick =
 
 };
 
-
-/* =========================================================
-   INICIO
-   ========================================================= */
 
 window.addEventListener(
   'load',
